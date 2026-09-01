@@ -15,12 +15,5 @@ yarn-error.log*
 !.yarn/patches
 .pnp.*
 
-# Claude Code 로컬 설정 (머신마다 다름)
-.claude/settings.local.json
-
 # 작업용 문서 (이력서·자기소개서 등 개인 정보 포함)
 docs/
-
-# Claude Code 로컬 산출물
-.agents
-.claude/

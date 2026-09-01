@@ -52,13 +52,22 @@ src/
 Home
 ├─ Hero       Frontend / Developer + 경력 두 문장 + Projects 버튼
 ├─ About      소개 문단 + Experience + Toolbox
-└─ Expertise  다뤄온 영역 4개. 화면을 꽉 채우고 pin 으로 고정된 채 가로로 넘어갑니다
+└─ Expertise  다뤄온 영역 4개. 화면을 꽉 채우고 pin 으로 고정된 채 한 칸씩 넘어갑니다
 ```
 
+- **Expertise 패널에는 사진이 없습니다.** 예전에는 오른쪽 칸을 Unsplash 사진이 채웠는데,
+  네 장이 서로 다른 소재를 흑백 + 유형 색으로 겨우 묶고 있을 뿐 내용과 이어지지 않아 걷어냈습니다.
+  그 자리는 스펙 시트(`.service__spec`)가 대신하고, 패널을 구분하던 시각적 무게는
+  큰 번호(`.service__no`)와 두 칸을 가로지르는 머리 실선(`.service__head`)이 넘겨받았습니다.
+- **하단 스텝 표시기**(`.pin__steps`)는 진행 막대 대신 네 칸의 이름을 다 보여줍니다. 상태는
+  스냅 컨트롤러가 확정한 뒤 클래스로만 내려오므로(`Home.jsx` 의 `showPanel`) 리렌더가 없습니다.
 - **`.pin` 은 `height: 100vh` 안에 전부 들어가야 합니다.** `.nav` 가 `position: fixed` 라
-  `padding-block` 위쪽에 `var(--nav-h)` 를 비워야 첫 줄이 헤더 뒤로 들어가지 않고,
-  `justify-content: safe center` 여야 넘칠 때 위쪽이 잘리지 않습니다. 패널 안쪽의 세로 여백은
-  `vw` 가 아니라 `vh` 기준입니다 — 넓고 낮은 화면에서 패널이 100vh 를 넘겨 아래가 잘렸습니다.
+  `padding-block` 위쪽에 `var(--nav-h)` 를 비워야 첫 줄이 헤더 뒤로 들어가지 않습니다.
+  화면이 낮아 내용이 넘칠 때 잘리는 쪽은 **패널 안쪽**이어야 합니다 — `.pin__track` 에
+  `min-height: 0` + `overflow: hidden` 을 줘서 트랙이 먼저 줄어들고, `.service` 의
+  `align-content: safe center` 가 번호와 제목을 위쪽에 붙잡습니다. 트랙이 버티면 넘친 만큼이
+  섹션 바닥에서 잘려 나가 하단 스텝 표시기부터 사라집니다. 패널 안쪽의 세로 여백을
+  `vw` 가 아니라 `vh` 기준으로 잡는 것도 같은 이유입니다.
 - **About 블록**(`.about`)은 `nth-of-type` 으로 heading 색을 돌리기 때문에 반드시 자기 래퍼
   안에 있어야 합니다. Home 의 다른 `<section>` 이 순번에 끼어들면 색이 밀립니다.
 - **About 은 Expertise(`.pin`) 보다 위에 둡니다.** 소개 문단(`.about__intro`)은 스크롤에 맞춰

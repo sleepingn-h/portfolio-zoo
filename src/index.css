@@ -400,44 +400,71 @@ em {
 .pin__track {
   display: grid;
   width: 100%;
+
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 .pin__track > .service {
   grid-area: 1 / 1;
 }
 
-.pin__rail {
-  position: relative;
-  height: 2px;
+.pin__steps {
+  display: grid;
+  grid-template-columns: repeat(var(--panel-count, 4), minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 32px);
   margin-inline: var(--bleed-pad);
-  background: var(--line);
 }
-.pin__rail::after {
-  content: '';
-  position: absolute;
-  inset-block: -1px;
-  left: 0;
-  width: calc(100% / var(--panel-count, 4));
-  background: var(--sc, var(--accent));
-  translate: calc(var(--panel, 0) * 100%) 0;
+.pin__step {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-top: 13px;
+  border-top: 2px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   transition:
-    translate 0.5s var(--ease),
-    background 0.5s var(--ease);
+    color 0.68s var(--ease) 0.12s,
+    border-color 0.68s var(--ease) 0.12s;
 }
+.pin__step-no {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.68s var(--ease) 0.12s;
+}
+.pin__step-key {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pin__step.is-done {
+  border-top-color: color-mix(in srgb, var(--sc) 40%, var(--line));
+}
+.pin__step.is-active {
+  color: var(--text);
+  border-top-color: var(--sc);
+}
+.pin__step.is-active .pin__step-no {
+  color: var(--sc-ink);
+}
+
 .pin[data-panel='0'] {
-  --panel: 0;
   --sc: var(--c1);
+  --sc-ink: var(--c1-ink);
 }
 .pin[data-panel='1'] {
-  --panel: 1;
   --sc: var(--c2);
+  --sc-ink: var(--c2-ink);
 }
 .pin[data-panel='2'] {
-  --panel: 2;
   --sc: var(--c3);
+  --sc-ink: var(--c3-ink);
 }
 .pin[data-panel='3'] {
-  --panel: 3;
   --sc: var(--c4);
+  --sc-ink: var(--c4-ink);
 }
 
 .service {
@@ -447,12 +474,13 @@ em {
   transition:
     opacity 0.6s var(--ease-fade),
     visibility 0.6s var(--ease-fade);
-  min-height: min(680px, 72vh);
   display: grid;
-  --text-w: 900px;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(20px, 3.5vw, 56px);
-  padding: 0 var(--bleed-pad);
+  align-content: center;
+  align-content: safe center;
+  grid-template-columns: minmax(0, 1fr) minmax(0, clamp(260px, 27%, 420px));
+  column-gap: clamp(24px, 4vw, 72px);
+  row-gap: clamp(26px, 4.2vh, 52px);
+  padding: clamp(40px, 7vh, 88px) var(--bleed-pad);
   background: linear-gradient(
     160deg,
     color-mix(in srgb, var(--sc) 7%, var(--bg-soft)),
@@ -467,73 +495,102 @@ em {
   transition-duration: 0.68s;
 }
 
-.service__text {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
+.service__head,
+.service__lead,
+.service__spec {
   translate: 0 22px;
   transition: translate 0.8s var(--ease);
-  max-width: var(--text-w);
-  padding-block: clamp(32px, 6vh, 80px);
 }
-.service.is-active .service__text {
+.service.is-active :is(.service__head, .service__lead, .service__spec) {
   translate: 0 0;
   transition-delay: 0.12s;
+}
+.service.is-active .service__lead {
+  transition-delay: 0.17s;
+}
+.service.is-active .service__spec {
+  transition-delay: 0.22s;
+}
+
+.service__lead {
+  min-width: 0;
+}
+
+.service__head {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px clamp(24px, 4vw, 72px);
+  padding-bottom: clamp(16px, 2.4vh, 28px);
+  border-bottom: 1px solid color-mix(in srgb, var(--sc) 30%, transparent);
 }
 .service__key {
   display: flex;
   align-items: baseline;
-  gap: 12px;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  gap: clamp(14px, 1.6vw, 24px);
   color: var(--sc-ink);
 }
 .service__no {
-  padding-bottom: 2px;
-  border-bottom: 2px solid var(--sc);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-size: clamp(44px, 5vw, 80px);
+  line-height: 0.85;
+  font-weight: 800;
+  letter-spacing: -0.05em;
   font-variant-numeric: tabular-nums;
 }
+.service__key-text {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
 .service__title {
-  margin-top: 10px;
-  font-size: clamp(20px, 3.8vw, 26px);
-  line-height: 1.14;
+  font-size: clamp(26px, 3.4vw, 56px);
+  line-height: 1.16;
   letter-spacing: -0.04em;
   font-weight: 700;
 }
 .service__meta {
-  margin-top: 14px;
   color: var(--muted);
   font-size: 14px;
+  letter-spacing: 0.01em;
 }
 .service__desc {
-  margin-top: clamp(18px, 3vh, 36px);
+  margin-top: clamp(22px, 3.4vh, 40px);
   display: grid;
-  gap: 4px;
-  font-size: clamp(15px, 1.5vw, 17px);
+  gap: 6px;
+  max-width: 46em;
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.75;
 }
 
 .service__spec {
-  margin-top: auto;
-  padding-top: clamp(20px, 3.2vh, 44px);
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  padding-left: clamp(20px, 2.6vw, 44px);
+  border-left: 1px solid color-mix(in srgb, var(--sc) 22%, var(--line));
+}
+.service__spec-row + .service__spec-row {
+  margin-top: clamp(16px, 2.2vh, 24px);
+  padding-top: clamp(16px, 2.2vh, 24px);
+  border-top: 1px solid var(--line);
 }
 .service__spec dt {
   margin-bottom: 10px;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 .service__spec dd {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
+  display: inline;
+  font-size: 15px;
   line-height: 1.85;
+}
+.service__spec dd + dd::before {
+  content: '·';
+  margin: 0 9px;
+  color: color-mix(in srgb, var(--muted) 55%, transparent);
 }
 
 .section-head,
@@ -1521,14 +1578,25 @@ a.archive-item__link:hover .archive-item__go[data-dest='site'] .archive-item__cu
   }
   .service {
     grid-template-columns: 1fr;
-    min-height: 0;
-  }
-  .service__text {
-    padding-block: 28px;
+    gap: 22px;
+    padding-block: 22px;
   }
   .service__spec {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    padding-left: 0;
+    padding-top: 20px;
+    border-left: 0;
+    border-top: 1px solid color-mix(in srgb, var(--sc) 22%, var(--line));
+  }
+  .service__spec-row + .service__spec-row {
+    margin-top: 13px;
+    padding-top: 13px;
+  }
+  .service__spec dt {
+    display: inline;
+    margin-right: 10px;
+  }
+  .pin__step-key {
+    display: none;
   }
   .exp__row {
     grid-template-columns: 1fr;

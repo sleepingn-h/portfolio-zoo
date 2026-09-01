@@ -165,9 +165,15 @@ export default function Home() {
       let settleTimer;
       let lockTimer;
 
+      const stepEls = gsap.utils.toArray('.pin__step', viewport);
+
       const showPanel = (index) => {
         viewport.dataset.panel = String(index);
         panels.forEach((el, i) => el.classList.toggle('is-active', i === index));
+        stepEls.forEach((el, i) => {
+          el.classList.toggle('is-active', i === index);
+          el.classList.toggle('is-done', i < index);
+        });
       };
 
       const setAnchor = (index) => {
@@ -335,35 +341,46 @@ export default function Home() {
         <div className='pin__track' ref={trackRef}>
           {EXPERTISE.map((s) => (
             <article className='service' key={s.no}>
-              <div className='service__text'>
+              <header className='service__head'>
                 <p className='service__key'>
                   <span className='service__no'>{s.no}</span>
-                  {s.key}
+                  <span className='service__key-text'>{s.key}</span>
                 </p>
-                <h3 className='service__title'>{s.title}</h3>
                 <p className='service__meta'>{s.meta}</p>
+              </header>
+
+              <div className='service__lead'>
+                <h3 className='service__title'>{s.title}</h3>
 
                 <div className='service__desc'>
                   {s.desc.map((line) => (
                     <p key={line}>{line}</p>
                   ))}
                 </div>
-
-                <dl className='service__spec'>
-                  {s.spec.map((col) => (
-                    <div className='service__spec-col' key={col.label}>
-                      <dt>{col.label}</dt>
-                      {col.items.map((item) => (
-                        <dd key={item}>{item}</dd>
-                      ))}
-                    </div>
-                  ))}
-                </dl>
               </div>
+
+              <dl className='service__spec'>
+                {s.spec.map((col) => (
+                  <div className='service__spec-row' key={col.label}>
+                    <dt>{col.label}</dt>
+                    {col.items.map((item) => (
+                      <dd key={item}>{item}</dd>
+                    ))}
+                  </div>
+                ))}
+              </dl>
             </article>
           ))}
         </div>
-        <div className='pin__rail' aria-hidden='true' />
+
+        <ol className='pin__steps' aria-hidden='true'>
+          {EXPERTISE.map((s) => (
+            <li className='pin__step' key={s.no}>
+              <span className='pin__step-no'>{s.no}</span>
+              <span className='pin__step-key'>{s.key}</span>
+            </li>
+          ))}
+        </ol>
       </section>
     </PageTransition>
   );
