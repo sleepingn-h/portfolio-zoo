@@ -6,8 +6,11 @@ import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap';
 import PageTransition from '../components/PageTransition';
 import HeroWordmark from '../components/HeroWordmark';
 import { claimActiveRoute } from '../lib/activeRoute';
+import useMediaQuery from '../lib/useMediaQuery';
 import { STACK, EXPERTISE } from '../data/data';
 import Reveal from '../components/Reveal';
+
+const STACKED_QUERY = '(max-width: 720px), (max-height: 700px)';
 
 const intro = [
   '디자인을 실제 서비스 화면으로 구현하는 것에서 끝나지 않고,',
@@ -37,6 +40,8 @@ export default function Home() {
   const introRef = useRef(null);
   const pinRef = useRef(null);
   const trackRef = useRef(null);
+
+  const stacked = useMediaQuery(STACKED_QUERY);
 
   const lenis = useLenis();
   const lenisRef = useRef(null);
@@ -147,6 +152,8 @@ export default function Home() {
 
   useGSAP(
     () => {
+      if (stacked) return;
+
       const track = trackRef.current;
       const viewport = pinRef.current;
       const panels = gsap.utils.toArray('.service', track);
@@ -281,7 +288,7 @@ export default function Home() {
         release(lenisRef.current);
       };
     },
-    { scope: pinRef },
+    { scope: pinRef, dependencies: [stacked], revertOnUpdate: true },
   );
 
   return (
@@ -333,6 +340,7 @@ export default function Home() {
         className='pin'
         ref={pinRef}
         data-panel='0'
+        data-stacked={stacked ? 'true' : undefined}
         style={{ '--panel-count': EXPERTISE.length }}
       >
         <Reveal as='h2' className='pin__label'>
