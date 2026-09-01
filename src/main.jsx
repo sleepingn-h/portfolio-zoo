@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { MotionConfig } from 'motion/react'
 import SmoothScrollProvider from './providers/SmoothScrollProvider'
 import App from './App'
@@ -10,9 +10,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <MotionConfig reducedMotion="user">
       <SmoothScrollProvider>
-        <HashRouter>
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
           <App />
-        </HashRouter>
+        </BrowserRouter>
       </SmoothScrollProvider>
     </MotionConfig>
   </StrictMode>

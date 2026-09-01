@@ -9,7 +9,7 @@ React + Vite 포트폴리오. GitHub Pages 배포용으로 셋팅되어 있습�
 | 스무스 스크롤 | [Lenis](https://lenis.darkroom.engineering/) |
 | 스크롤 연동 애니메이션 | GSAP + ScrollTrigger (`@gsap/react` 의 `useGSAP`) |
 | 페이지 전환 / 공유 레이아웃 | Motion (구 Framer Motion, `import ... from 'motion/react'`) |
-| 라우팅 | react-router-dom `HashRouter` |
+| 라우팅 | react-router-dom `BrowserRouter` (basename = `BASE_URL`) |
 
 ## 실행
 
@@ -92,7 +92,7 @@ Case Study 는 expanded view. 그래서 캡처 규칙(`.shot`)을 공유하고 �
 - **Case Study 승격**은 데이터의 `featured` 플래그 하나로 정해진다. `featured` 를 켜면
   Selected 섹션에 나타나고 상세 페이지가 생기며,
   Archive 카드에는 "Case Study" 배지가 붙는다.
-- **필터 상태는 URL 에 실린다** (`/#/projects?type=public`). HashRouter 에서도 그대로 동작하고
+- **필터 상태는 URL 에 실린다** (`/projects?type=public`). 그대로 동작하고
   새로고침·공유·뒤로가기에서 유지된다. `replace` 로 넣어 히스토리는 쌓지 않는다.
 - **Archive 의 정보량**은 캡처 · 제목 · 연도 · 유형까지다. 역할 · 스택 · 성과는 이력서와
   Case Study 상세가 맡는다. 호버도 정보를 펼치지 않고 클릭 가능 여부(→ / ↗)만 알린다.
@@ -151,9 +151,16 @@ git push -u origin main
 
 `<user>.github.io` 저장소(user/organization 페이지)라면 사이트가 루트로 서빙되므로 워크플로우의 `BASE_PATH` 를 `/` 로 바꾸세요.
 
-### HashRouter 를 쓰는 이유
+### 주소에 `#` 없이 라우팅하기
 
-GitHub Pages 는 정적 파일만 서빙하고 SPA 폴백이 없습니다. `BrowserRouter` 로 `/projects` 를 새로고침하면 서버에 `/projects` 파일을 요청하게 되어 404 가 납니다. `HashRouter` 는 경로가 `#` 뒤에 있어 서버까지 가지 않으므로 (`/#/projects`) 404 없이 동작하고, 별도의 `404.html` 트릭도 필요 없습니다.
+GitHub Pages 는 정적 파일만 서빙하고 SPA 폴백이 없습니다. `/projects` 를 새로고침하면 그 이름의 파일을 찾다가 없으니 `404.html` 을 돌려줍니다. 그래서 빌드에서 **`404.html` 을 `index.html` 사본으로 만들어 둡니다** (`vite.config.js` 의 `spaFallback` 플러그인). 어떤 경로로 들어와도 같은 앱이 뜨고, 그다음은 라우터가 주소를 보고 화면을 고릅니다.
+
+`BrowserRouter` 의 `basename` 은 `import.meta.env.BASE_URL` 에서 옵니다. 프로젝트 페이지는 `/<repo>/` 아래로 서빙되므로 라우터가 그 접두어를 경로에서 떼어내야 합니다. dev 서버에서는 `/` 라 아무것도 떼지 않습니다.
+
+주의할 점 두 가지:
+
+- **응답 상태 코드는 404 로 남습니다.** 사용자에게는 정상 화면이지만 크롤러에는 404 입니다. 이게 곤란하면 SPA 폴백을 제대로 지원하는 호스팅(Netlify · Cloudflare Pages 등)으로 옮기거나 `HashRouter` 로 되돌려야 합니다.
+- **`index.html` 안의 경로는 상대 경로로 쓰면 안 됩니다.** `./favicon.svg` 로 두면 `/projects/task-manager` 로 직접 들어왔을 때 `/projects/favicon.svg` 를 찾아 404 가 납니다. `%BASE_URL%favicon.svg` 처럼 Vite 가 base 를 채워 넣게 합니다.
 
 ## 내용 바꾸기
 
