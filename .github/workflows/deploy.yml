@@ -1,0 +1,57 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# GITHUB_TOKEN 이 Pages 에 배포할 수 있도록 권한을 연다
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 배포는 한 번에 하나만. 새로 푸시되면 진행 중이던 건 취소한다.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # packageManager 필드에 적힌 yarn 버전을 그대로 활성화한다.
+      # (setup-node 의 cache: yarn 은 corepack 이전의 yarn 1.x 을 보고
+      #  잘못된 캐시 경로를 잡으므로 쓰지 않는다 — 의존성이 적어 이득도 작다)
+      - run: corepack enable
+
+      - run: yarn install --immutable
+
+      - name: Build
+        env:
+          # 프로젝트 페이지는 /<repo>/ 아래로 서빙되므로 저장소 이름을 base 로 넣는다.
+          # user/organization 페이지(<user>.github.io)라면 이 줄을 BASE_PATH: / 로 바꾼다.
+          BASE_PATH: /${{ github.event.repository.name }}/
+        run: yarn build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

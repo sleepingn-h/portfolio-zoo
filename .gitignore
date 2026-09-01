@@ -1,0 +1,26 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Yarn (zero-install 안 씀 — yarn.lock / .yarnrc.yml 만 커밋)
+.yarn/*
+!.yarn/patches
+.pnp.*
+
+# Claude Code 로컬 설정 (머신마다 다름)
+.claude/settings.local.json
+
+# 작업용 문서 (이력서·자기소개서 등 개인 정보 포함)
+docs/
+
+# Claude Code 로컬 산출물
+.agents
+.claude/
