@@ -164,7 +164,7 @@ export default function Home() {
 
       const steps = EXPERTISE.length - 1;
 
-      const SNAP_DURATION = 0.8;
+      const SNAP_DURATION = 0.6;
       const CHANGE_LOCK = 0.5;
       let anchor = 0;
       let snapping = false;

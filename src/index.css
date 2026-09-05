@@ -235,7 +235,6 @@ em {
   width: 100%;
   margin-inline: auto;
 }
-
 .home,
 .projects,
 .detail {
@@ -350,7 +349,6 @@ em {
   margin-inline: auto;
   height: auto;
   overflow: visible;
-
   filter: drop-shadow(0 0 0.02em var(--bg)) drop-shadow(0 0 0.06em var(--bg));
 }
 .hero__word + .hero__word {
@@ -383,7 +381,6 @@ em {
 
 .pin {
   margin-top: clamp(80px, 14vh, 160px);
-
   width: 100vw;
   margin-inline: calc(50% - 50vw);
   height: 100vh;
@@ -406,7 +403,6 @@ em {
 .pin__track {
   display: grid;
   width: 100%;
-
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
@@ -432,13 +428,13 @@ em {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   transition:
-    color 0.68s var(--ease) 0.12s,
-    border-color 0.68s var(--ease) 0.12s;
+    color 0.51s var(--ease) 0.09s,
+    border-color 0.51s var(--ease) 0.09s;
 }
 .pin__step-no {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  transition: color 0.68s var(--ease) 0.12s;
+  transition: color 0.51s var(--ease) 0.09s;
 }
 .pin__step-key {
   overflow: hidden;
@@ -478,8 +474,8 @@ em {
   visibility: hidden;
   pointer-events: none;
   transition:
-    opacity 0.6s var(--ease-fade),
-    visibility 0.6s var(--ease-fade);
+    opacity 0.45s var(--ease-fade),
+    visibility 0.45s var(--ease-fade);
   display: grid;
   align-content: center;
   align-content: safe center;
@@ -497,25 +493,25 @@ em {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transition-delay: 0.12s;
-  transition-duration: 0.68s;
+  transition-delay: 0.09s;
+  transition-duration: 0.51s;
 }
 
 .service__head,
 .service__lead,
 .service__spec {
   translate: 0 22px;
-  transition: translate 0.8s var(--ease);
+  transition: translate 0.6s var(--ease);
 }
 .service.is-active :is(.service__head, .service__lead, .service__spec) {
   translate: 0 0;
-  transition-delay: 0.12s;
+  transition-delay: 0.09s;
 }
 .service.is-active .service__lead {
-  transition-delay: 0.17s;
+  transition-delay: 0.13s;
 }
 .service.is-active .service__spec {
-  transition-delay: 0.22s;
+  transition-delay: 0.17s;
 }
 
 .service__lead {
