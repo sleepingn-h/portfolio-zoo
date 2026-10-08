@@ -13,13 +13,12 @@ import Reveal from '../components/Reveal';
 const STACKED_QUERY = '(max-width: 720px), (max-height: 700px)';
 
 const intro = [
-  '디자인을 실제 서비스 화면으로 구현하는 것에서 끝나지 않고,',
-  '웹 표준과 접근성을 지키면서 다양한 환경에서',
-  '안정적으로 사용할 수 있는 화면을 만드는 것을 중요하게 생각합니다.',
-  '문제의 원인을 찾아 필요한 범위에서 해결하고 협업하며',
-  '운영 중인 서비스의 화면을 개선해왔습니다.',
-  '데이터 구조를 이해하고 백엔드와 협업해 문제를 풀어온 경험을',
-  '신규 화면 개발과 기존 서비스 개선에 함께 쓰고 싶습니다.',
+  '웹 표준과 접근성을 기준으로',
+  '다양한 환경에서 안정적으로 사용할 수 있는 화면을 만들어왔습니다.',
+  '콘텐츠의 우선순위와 사용 흐름을 살피고,',
+  '필요한 인터랙션과 구조를 더해 화면을 개선합니다.',
+  '지금은 React·TypeScript를 기반으로',
+  '기존 UI 개발 경험을 더 다양한 방식으로 확장하고 있습니다.',
 ];
 
 const timeline = [
@@ -329,9 +328,25 @@ export default function Home() {
         <Reveal as='h2' className='toolbox__heading'>
           Toolbox
         </Reveal>
-        <Reveal as='ul' className='toolbox__list' selector='li' y={24} stagger={0.04}>
-          {STACK.map((item) => (
-            <li key={item}>{item}</li>
+        <Reveal
+          as='div'
+          className='toolbox__groups'
+          selector='.toolbox__group'
+          y={24}
+          stagger={0.08}
+        >
+          {STACK.map((group, i) => (
+            <div className='toolbox__group' key={group.label}>
+              <span className='toolbox__no' aria-hidden='true'>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 className='toolbox__label'>{group.label}</h3>
+              <ul className='toolbox__list'>
+                {group.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
           ))}
         </Reveal>
       </section>
