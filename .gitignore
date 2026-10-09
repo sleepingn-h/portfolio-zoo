@@ -1,19 +1,9 @@
-node_modules
-dist
-dist-ssr
-*.local
-.DS_Store
-.vscode/*
-!.vscode/extensions.json
-.idea
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+node_modules/
+.next/
+out/
+next-env.d.ts
+tsconfig.tsbuildinfo
 
-# Yarn (zero-install 안 씀 — yarn.lock / .yarnrc.yml 만 커밋)
-.yarn/*
-!.yarn/patches
-.pnp.*
-
-# 작업용 문서 (이력서·자기소개서 등 개인 정보 포함)
-docs/
+# phase execution outputs
+phases/**/phase*-output.json
+phases/**/step*-output.json
