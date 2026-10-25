@@ -1106,6 +1106,24 @@ em {
   height: 15px;
   color: var(--sc-ink);
 }
+.detail__links {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.detail__link--main {
+  background: var(--sc-ink);
+  border-color: var(--sc-ink);
+  color: #fff;
+  font-weight: 600;
+}
+@media (hover: hover) {
+  .detail__link--main:hover {
+    background: color-mix(in srgb, var(--sc-ink) 85%, #000);
+    border-color: color-mix(in srgb, var(--sc-ink) 85%, #000);
+  }
+}
 .detail__cover {
   border-radius: var(--radius);
   border: 1px solid var(--line);

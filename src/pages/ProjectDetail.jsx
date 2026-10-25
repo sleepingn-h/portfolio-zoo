@@ -220,6 +220,37 @@ export default function ProjectDetail() {
             <li>{project.period ?? project.year}</li>
             <li>{project.role}</li>
           </ul>
+
+          {(project.site || project.repo) && (
+            <ul className='detail__links'>
+              {project.site && (
+                <li>
+                  <a
+                    href={project.site}
+                    className='btn detail__link detail__link--main'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    사이트 보기 <span aria-hidden='true'>↗</span>
+                    <span className='sr-only'>새 탭에서 열기</span>
+                  </a>
+                </li>
+              )}
+              {project.repo && (
+                <li>
+                  <a
+                    href={project.repo}
+                    className='btn detail__link'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    GitHub <span aria-hidden='true'>↗</span>
+                    <span className='sr-only'>새 탭에서 열기</span>
+                  </a>
+                </li>
+              )}
+            </ul>
+          )}
         </div>
 
         <ProjectShot project={project} variant='cover' priority className='detail__cover' />
